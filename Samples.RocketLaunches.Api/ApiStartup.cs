@@ -3,13 +3,16 @@ using System.IO;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Samples.RocketLaunches.Api.DataAccess;
 using Samples.RocketLaunches.Api.Filters;
+using Samples.RocketLaunches.Api.Models;
 using Samples.RocketLaunches.Api.Services;
+using Samples.RocketLaunches.Api.Validators;
 
 namespace Samples.RocketLaunches.Api
 {
@@ -18,6 +21,7 @@ namespace Samples.RocketLaunches.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(o => { o.Filters.Add(new ModelAttributeValidationFilter()); })
+                    .AddFluentValidation(c => c.RegisterValidatorsFromAssemblyContaining<QueryMetricsRequestValidator>(lifetime: ServiceLifetime.Singleton))
                     .AddJsonOptions(x =>
                                     {
                                         x.JsonSerializerOptions.IgnoreNullValues = true;
@@ -46,7 +50,9 @@ namespace Samples.RocketLaunches.Api
                                    });
 
             // Services
-            services.AddSingleton<IDemoDataService, DemoDataService>();
+            services.AddSingleton<IDemoDataService, DemoDataService>()
+                    .AddSingleton<ITransformer<CsvLocation, Location>, StaticCsvLocationTransformer>()
+                    .AddSingleton<ITransformer<CsvLaunch, Launch>, LaunchAsUtcTransformer>();
 
             // Repos
             services.AddSingleton<ILaunchRepository, InMemoryLaunchRepository>()

@@ -34,11 +34,11 @@ namespace Samples.RocketLaunches.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<RlApiResult<Company>> GetCompany(int id)
         {
-            var existingUser = _companyRepository.GetById(id);
+            var company = _companyRepository.GetById(id);
 
-            return existingUser == null
+            return company == null
                        ? NotFound()
-                       : existingUser.AsOkRlApiResult();
+                       : company.AsOkRlApiResult();
         }
     }
 }
