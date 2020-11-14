@@ -51,6 +51,15 @@ namespace Samples.RocketLaunches.Api
 
             // Services
             services.AddSingleton<IDemoDataService, DemoDataService>()
+                    .AddSingleton<ICacheClient, InMemoryCacheClient>()
+                    .AddSingleton<IMetricService>(p => new CachedMetricService(p.GetRequiredService<ICacheClient>(),
+                                                                               new QueryMetricService(p.GetRequiredService<ILaunchRepository>(),
+                                                                                                      p.GetServices<IMetricAggregator>())))
+                    .AddSingleton<IMetricAggregator, AvgLaunchCostAggregator>()
+                    .AddSingleton<IMetricAggregator, SuccessPercentageAggregator>()
+                    .AddSingleton<IMetricAggregator, TopCountriesAggregator>()
+                    .AddSingleton<IMetricAggregator, TopLocationsAggregator>()
+                    .AddSingleton<IMetricAggregator, TopMonthAggregator>()
                     .AddSingleton<ITransformer<CsvLocation, Location>, StaticCsvLocationTransformer>()
                     .AddSingleton<ITransformer<CsvLaunch, Launch>, LaunchAsUtcTransformer>();
 

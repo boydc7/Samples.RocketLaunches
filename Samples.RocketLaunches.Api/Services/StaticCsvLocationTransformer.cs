@@ -19,7 +19,7 @@ namespace Samples.RocketLaunches.Api.Services
             var location = new Location
                            {
                                Id = source.Id,
-                               Platform = splits[0]
+                               Platform = splits[0].Trim()
                            };
 
             if (splits.Length <= 1)
@@ -32,24 +32,24 @@ namespace Samples.RocketLaunches.Api.Services
                 case 2:
                 {
                     // If only 2 components, 2nd is country
-                    location.CountryName = splits[1];
+                    location.CountryName = splits[1].Trim();
 
                     break;
                 }
                 case 3:
                 {
                     // 3 components is platform/site/country
-                    location.SiteName = splits[1];
-                    location.CountryName = splits[2];
+                    location.SiteName = splits[1].Trim();
+                    location.CountryName = splits[2].Trim();
 
                     break;
                 }
                 default:
                 {
                     // 4+ is platform/site/region/country ...
-                    location.SiteName = splits[1];
-                    location.RegionName = splits[2];
-                    location.CountryName = splits[3];
+                    location.SiteName = splits[1].Trim();
+                    location.RegionName = splits[2].Trim();
+                    location.CountryName = splits[3].Trim();
 
                     break;
                 }
