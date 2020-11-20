@@ -12,6 +12,7 @@ namespace Samples.RocketLaunches.Api.Models
         public double AvgLaunchCost { get; set; }
         public double PctMissionSuccess { get; set; }
         public string TopMonthByLaunchCount { get; set; }
+        public int TopYearByLaunchCount { get; set; }
         public IReadOnlyList<Location> TopLocations { get; set; }
         public IReadOnlyList<string> TopCountries { get; set; }
     }

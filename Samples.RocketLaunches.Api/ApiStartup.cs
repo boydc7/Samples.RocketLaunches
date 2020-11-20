@@ -60,6 +60,7 @@ namespace Samples.RocketLaunches.Api
                     .AddSingleton<IMetricAggregator, TopCountriesAggregator>()
                     .AddSingleton<IMetricAggregator, TopLocationsAggregator>()
                     .AddSingleton<IMetricAggregator, TopMonthAggregator>()
+                    .AddSingleton<IMetricAggregator, TopYearAggregator>()
                     .AddSingleton<ITransformer<CsvLocation, Location>, StaticCsvLocationTransformer>()
                     .AddSingleton<ITransformer<CsvLaunch, Launch>, LaunchAsUtcTransformer>();
 
